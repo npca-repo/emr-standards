@@ -1,0 +1,1 @@
+Various supporting documents to implement interoperability standards between EMR systems and NPCA's Digital Payment Certification system.

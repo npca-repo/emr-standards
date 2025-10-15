@@ -1,0 +1,435 @@
+{
+	"info": {
+		"_postman_id": "18572684-a36b-4f77-b455-713a72e2af45",
+		"name": "NPCA EMR Clinical Data Submission",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7906459",
+		"_collection_link": "https://winter-escape-663076.postman.co/workspace/Externals~ecaa89f6-a98d-43f9-be0f-e406431743ae/collection/7906459-18572684-a36b-4f77-b455-713a72e2af45?action=share&source=collection_link&creator=7906459"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Set Bearer Token\", function () {\r",
+							"    pm.collectionVariables.set(\"access_token\", pm.response.json().access_token);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Set Refresh Token\", function () {\r",
+							"    pm.collectionVariables.set(\"refresh_token\", pm.response.json().refresh_token);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"strictSSL": false,
+				"followRedirects": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "string"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "string"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://demo-authena.ddmit.site/oauth/token",
+					"protocol": "https",
+					"host": [
+						"demo-authena",
+						"ddmit",
+						"site"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Set Bearer Token\", function () {\r",
+							"    pm.collectionVariables.set(\"access_token\", pm.response.json().access_token);\r",
+							"});\r",
+							"pm.test(\"Set Bearer Token\", function () {\r",
+							"    pm.collectionVariables.set(\"refresh_token\", pm.response.json().refresh_token);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"strictSSL": false,
+				"followRedirects": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "string"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "string"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "refresh_token",
+							"value": "{{refresh_token}}",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://demo-authena.ddmit.site/oauth/token",
+					"protocol": "https",
+					"host": [
+						"demo-authena",
+						"ddmit",
+						"site"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Visit",
+			"protocolProfileBehavior": {
+				"strictSSL": false,
+				"followRedirects": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "string"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "string"
+					},
+					{
+						"key": "X-System-Code",
+						"value": "SHCH",
+						"type": "string"
+					},
+					{
+						"key": "X-Health-Facility-Code",
+						"value": "121020",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"visits\": [\r\n    {\r\n      \"health_facility_code\": \"121020\",\r\n      \"patient_code\": \"P25003877\",\r\n      \"code\": \"V420650\",\r\n      \"admission_type\": \"Self Refer\",\r\n      \"discharge_type\": \"Authorized\",\r\n      \"visit_outcome\": \"Improved\",\r\n      \"visit_type\": \"OPD\",\r\n      \"admitted_at\": \"2025-03-17T09:30:00.000+07:00\",\r\n      \"discharged_at\": \"2025-03-17T10:45:00.000+07:00\",\r\n      \"followup_at\": \"2025-03-24T09:00:00.000+07:00\",\r\n      \"created_at\": \"2025-03-17T09:30:00.000+07:00\",\r\n      \"updated_at\": \"2025-03-17T10:45:00.000+07:00\",\r\n      \"patient\": {\r\n        \"code\": \"PT20250317001\",\r\n        \"surname\": \"Smith\",\r\n        \"name\": \"John\",\r\n        \"sex\": \"M\",\r\n        \"birthdate\": \"1980-05-15\",\r\n        \"phone\": \"012 345 678\",\r\n        \"nationality\": \"Cambodian\",\r\n        \"disabilities\": [\r\n          \"Hearing impairment\"\r\n        ],\r\n        \"occupation\": \"Teacher\",\r\n        \"marital_status\": \"Married\",\r\n        \"photos\": [\r\n          \"https://hospital.example/photos/PT20250317001_1.jpg\"\r\n        ],\r\n        \"address\": {\r\n          \"province\": {\r\n            \"code\": \"12\",\r\n            \"name\": \"Phnom Penh\"\r\n          },\r\n          \"district\": {\r\n            \"code\": \"1201\",\r\n            \"name\": \"Chamkar Mon\"\r\n          },\r\n          \"commune\": {\r\n            \"code\": \"120101\",\r\n            \"name\": \"Tonle Bassac\"\r\n          },\r\n          \"village\": {\r\n            \"code\": \"12010101\",\r\n            \"name\": \"Phsar Deum Thkov\"\r\n          },\r\n          \"house_number\": \"45\",\r\n          \"street_number\": \"302\",\r\n          \"location\": \"Near Central Market 1\"\r\n        },\r\n        \"identifications\": [\r\n          {\r\n            \"patient_code\": \"P25003877\",\r\n            \"card_code\": \"ID123456789\",\r\n            \"card_type\": \"National ID\"\r\n          }\r\n        ],\r\n        \"death_at\": null,\r\n        \"spid\": \"250317001\",\r\n        \"created_at\": \"2025-03-17T08:30:00.000+07:00\",\r\n        \"updated_at\": \"2025-03-17T08:30:00.000+07:00\"\r\n      },\r\n      \"triages\": [\r\n        {\r\n          \"parent_code\": \"P2324\",\r\n          \"visit_code\": \" V420650\",\r\n          \"code\": \"TR250317\",\r\n          \"chief_complaint\": \"Periodic fever with chills for 3 days\",\r\n          \"height\": 170,\r\n          \"weight\": 65,\r\n          \"recorded_at\": \"2025-03-17T09:32:00.000+07:00\",\r\n          \"recorded_by\": \"Khun Srey Mom\",\r\n          \"title\": \"Doctor\"\r\n        }\r\n      ],\r\n      \"vital_signs\": [\r\n        {\r\n          \"encounter_code\": \"TR250317\",\r\n          \"recorded_at\": \"2025-03-17T09:40:00.000+07:00\",\r\n          \"recorded_by\": \"Khun Srey Mom\",\r\n          \"title\": \"Doctor\",\r\n          \"observations\": [\r\n            {\r\n              \"name\": \"Blood Pressure Systolic\",\r\n              \"value\": 135\r\n            },\r\n            {\r\n              \"name\": \"Blood Pressure Diastolic\",\r\n              \"value\": 85\r\n            },\r\n            {\r\n              \"name\": \"Pulse\",\r\n              \"value\": 92\r\n            },\r\n            {\r\n              \"name\": \"Respiratory Rate\",\r\n              \"value\": 18\r\n            },\r\n            {\r\n              \"name\": \"Temperature\",\r\n              \"value\": 38.7\r\n            },\r\n            {\r\n              \"name\": \"SpO2\",\r\n              \"value\": 97\r\n            },\r\n            {\r\n              \"name\": \"Glucose\",\r\n              \"value\": 110\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"medical_histories\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"name\": \" Immunization History\",\r\n          \"value\": [\r\n            \"BCG\",\r\n            \"OPV\",\r\n            \"DTP\",\r\n            \"Measles\",\r\n            \"COVID-19\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"name\": \"Allergies\",\r\n          \"value\": [\r\n            \"Prahok\",\r\n            \"Shrimp paste\",\r\n            \"Penicillin\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"name\": \"Past Surgical History\",\r\n          \"value\": [\r\n            \"Appendectomy Surgery\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"name\": \"Past Medical History\",\r\n          \"value\": [\r\n            \"Dengue fever (2020)\",\r\n            \"Typhoid (2018)\",\r\n            \"Cesarean section at Calmette Hospital (2019)\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"name\": \"Family History\",\r\n          \"value\": [\r\n            \"Mother with diabetes\",\r\n            \"Father with hypertension and stroke at age 60\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"name\": \"Current Illness History\",\r\n          \"value\": [\r\n            \"Patient reports high fever with chills occurring every 48 hours, accompanied by headache and joint pain. Symptoms started 3 days ago after returning from a trip to Mondulkiri province. No prior history of malaria. No medication taken yet.\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"name\": \"Current Medication\",\r\n          \"value\": [\r\n            \"Metformin 500mg\",\r\n            \"Amlodipine 5mg\"\r\n          ]\r\n        }\r\n      ],\r\n      \"physical_examinations\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"EN20250317001\",\r\n          \"name\": \"General Appearance\",\r\n          \"value\": \"Ill-appearing with intermittent shivering\",\r\n          \"value_type\": \"text\",\r\n          \"value_unit\": null\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"name\": \"Skin\",\r\n          \"value\": \"Warm, jaundiced, no rash\",\r\n          \"value_type\": \"text\",\r\n          \"value_unit\": null\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"name\": \"Digestive System\",\r\n          \"value\": [\r\n            {\r\n              \"inspection\": \"Flat, no visible masses\"\r\n            },\r\n            {\r\n              \"palpation\": \"Soft, mild RUQ tenderness, spleen palpable 1cm below costal margin\"\r\n            },\r\n            {\r\n              \"percussion\": \"No shifting dullness\"\r\n            },\r\n            {\r\n              \"auscultation\": \"Normal bowel sounds\"\r\n            }\r\n          ],\r\n          \"value_type\": \"complex\",\r\n          \"value_unit\": null\r\n        }\r\n      ],\r\n      \"outpatients\": [\r\n        {\r\n          \"visit_code\": \"V420650\",\r\n          \"code\": \"E417001\",\r\n          \"name\": \"General Inpatient\",\r\n          \"service_type\": \"General Medicine\",\r\n          \"started_at\": \"2025-03-17T09:35:00.000+07:00\",\r\n          \"ended_at\": \"2025-03-17T10:15:00.000+07:00\",\r\n          \"encountered_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00.000+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00.000+07:00\"\r\n        }\r\n      ],\r\n      \"inpatients\": [\r\n        {\r\n          \"visit_code\": \"V420650\",\r\n          \"code\": \"E417002\",\r\n          \"name\": \"General Inpatient\",\r\n          \"service_type\": \"Internal Medicine\",\r\n          \"started_at\": \"2025-03-20T14:00:00.000+07:00\",\r\n          \"ended_at\": \"2025-03-23T10:00:00.000+07:00\",\r\n          \"encountered_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00.000+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00.000+07:00\"\r\n        }\r\n      ],\r\n      \"emergencies\": [\r\n        {\r\n          \"visit_code\": \"V420650\",\r\n          \"code\": \"E417003\",\r\n          \"name\": \"Emergency\",\r\n          \"service_type_name\": \"Emergency Medicine\",\r\n          \"started_at\": \"2025-03-17T15:30:00.000+07:00\",\r\n          \"ended_at\": \"2025-03-17T17:45:00.000+07:00\",\r\n          \"encountered_by\": \"Dr. Hor Mony\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00.000+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00.000+07:00\"\r\n        }\r\n      ],\r\n      \"surgeries\": [\r\n        {\r\n          \"visit_code\": \"V420650\",\r\n          \"parent_code\": \"E417001\",\r\n          \"code\": \"E417004\",\r\n          \"theater_name\": \"Operating Theater 2\",\r\n          \"service_type\": \"Laparoscopic Cholecystectomy\",\r\n          \"started_at\": \"2025-04-01T08:30:00.000+07:00\",\r\n          \"ended_at\": \"2025-04-01T10:15:00.000+07:00\",\r\n          \"reason\": \"Symptomatic gallstones with recurrent biliary colic\",\r\n          \"anesthesia_type\": \"General Endotracheal\",\r\n          \"procedure_notes\": \"Patient positioned supine. Pneumoperitoneum established with Veress needle. Four ports were placed. Gallbladder dissected from liver bed with hook cautery. Cystic duct and artery identified, clipped and divided. Gallbladder removed through umbilical port. Hemostasis confirmed. No bile leak. Ports removed under direct visualization. Wounds closed with 3-0 Vicryl and 4-0 Monocryl. Patient tolerated procedure well.\",\r\n          \"complications\": [\r\n            \"Mild bleeding from liver bed, controlled with electrocautery\"\r\n          ],\r\n          \"specimens\": [\r\n            \"Gallbladder with multiple stones\",\r\n            \"Cystic fluid sample\"\r\n          ],\r\n          \"blood_loss\": \"5cl\",\r\n          \"surgeon_name\": \"Dr. Sok Vichet\",\r\n          \"anesthetist_name\": \"Dr. Meas Sokunthea\",\r\n          \"assistant_names\": [\r\n            \"Dr. Chhan Rathana\",\r\n            \"Nurse Van Bopha\"\r\n          ],\r\n          \"created_at\": \"2025-04-01T08:30:00.000+07:00\",\r\n          \"updated_at\": \"2025-04-01T10:20:00.000+07:00\"\r\n        }\r\n      ],\r\n      \"progress_notes\": [\r\n        {\r\n          \"visit_code\": \"V420650\",\r\n          \"parent_code\": \"E417001\",\r\n          \"code\": \"E317001\",\r\n          \"started_at\": \"2025-03-17T16:00:00.000+07:00\",\r\n          \"ended_at\": \"2025-03-17T16:15:00.000+07:00\",\r\n          \"encountered_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00.000+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00.000+07:00\"\r\n        }\r\n      ],\r\n      \"soaps\": [\r\n        {\r\n          \"encounter_code\": \" E417002\",\r\n          \"subjective\": \"Patient reports fever has decreased after first dose of medication. Still experiencing mild headache and fatigue. No chills since this morning. Able to tolerate oral intake well.\",\r\n          \"objective\": \"Temperature 37.8°C (down from 38.7°C). Heart rate 85/min. Blood pressure 125/80 mmHg. Skin less jaundiced. Abdomen remains soft with mild tenderness in RUQ.\",\r\n          \"assessment\": \"Uncomplicated malaria showing initial response to treatment. Fever trending down. No signs of complications.\",\r\n          \"plan\": \"Continue artemether-lumefantrine as prescribed. Encourage oral hydration. Follow-up in clinic in 3 days. Return sooner if symptoms worsen or unable to tolerate medication.\",\r\n          \"evaluation\": null\r\n        }\r\n      ],\r\n      \"laboratories\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"request_code\": \"EL23222\",\r\n          \"requested_at\": \"2025-03-17T10:30:00.000+07:00\",\r\n          \"requested_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"collected_at\": \"2025-03-17T10:30:00.000+07:00\",\r\n          \"collected_by\": \"Dr. Chhun Sovannarith\",\r\n          \"results\": [\r\n            {\r\n              \"name\": \"Malaria Blood Smear\",\r\n              \"category\": \"Parasitology\",\r\n              \"value\": \"Positive for P. falciparum\",\r\n              \"value_type\": \"string\",\r\n              \"value_unit\": null,\r\n              \"reference_range\": \"Negative\",\r\n              \"interpretation\": \"Positive\",\r\n              \"verified_at\": \"2025-03-17T10:50:00.000+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00.000+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            },\r\n            {\r\n              \"name\": \"Parasitemia\",\r\n              \"category\": \"Parasitology\",\r\n              \"value\": 2.5,\r\n              \"value_type\": \"float\",\r\n              \"value_unit\": \"%\",\r\n              \"reference_range\": \"0\",\r\n              \"interpretation\": \"High\",\r\n              \"verified_at\": \"2025-03-17T10:50:00.000+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00.000+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            },\r\n            {\r\n              \"name\": \"Hemoglobin\",\r\n              \"category\": \"Hematology\",\r\n              \"value\": 11.2,\r\n              \"value_type\": \"float\",\r\n              \"value_unit\": \"g/dL\",\r\n              \"reference_range\": \"13.5-17.5\",\r\n              \"interpretation\": \"Low\",\r\n              \"verified_at\": \"2025-03-17T10:50:00.000+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00.000+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"imageries\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417002\",\r\n          \"request_code\": \"EL23222\",\r\n          \"requested_at\": \"2025-03-17T11:30:00.000+07:00\",\r\n          \"requested_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"title\",\r\n          \"collected_at\": \"2025-03-17T10:30:00.000+07:00\",\r\n          \"collected_by\": \"Dr. Chhun Sovannarith\",\r\n          \"results\": [\r\n            {\r\n              \"name\": \"Brain Scan\",\r\n              \"category\": \"CT Scan\",\r\n              \"images\": [\r\n                \"img.com/result2.jpg\"\r\n              ],\r\n              \"result\": \"string\",\r\n              \"conclusion\": null,\r\n              \"verified_at\": \"2025-03-17T10:50:00.000+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00.000+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            }\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"request_code\": \"EL23222\",\r\n          \"requested_at\": \"2025-03-17T11:35:00.000+07:00\",\r\n          \"requested_by\": \"Dr. Chhun Sovannarith\",\r\n          \"tilte\": \"Doctor\",\r\n          \"results\": [\r\n            {\r\n              \"name\": \"Adomen Ultrasound\",\r\n              \"category\": \"Ultrasound\",\r\n              \"images\": [\r\n                \"img.com/result1.jpg\"\r\n              ],\r\n              \"result\": \"string\",\r\n              \"conclusion\": null,\r\n              \"verified_at\": \"2025-03-17T10:50:00.000+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00.000+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"diagnosis\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"diagnosis_type_name\": \"Primary\",\r\n          \"diagnosis_code\": \"B50\",\r\n          \"diagnosis_name\": \"Plasmodium falciparum malaria\",\r\n          \"diagnosis_description\": \"Plasmodium falciparum malaria with cerebral complications\",\r\n          \"diagnosed_at\": \"2025-03-17T10:05:00.000+07:00\",\r\n          \"diagnosed_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\"\r\n        }\r\n      ],\r\n      \"prescriptions\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"code\": \"RX20250317001\",\r\n          \"prescribed_at\": \"2025-03-17T10:10:00.000+07:00\",\r\n          \"prescribed_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"medications\": [\r\n            {\r\n              \"code\": \"MED001\",\r\n              \"medicine_name\": \"Artemether-Lumefantrine\",\r\n              \"strength\": \"20/120mg\",\r\n              \"form\": \"Tablet\",\r\n              \"method\": \"Oral\",\r\n              \"unit\": \"Tablet\",\r\n              \"morning\": 4,\r\n              \"afternoon\": 0,\r\n              \"evening\": 4,\r\n              \"night\": 0,\r\n              \"days\": 3,\r\n              \"interval\": null,\r\n              \"note\": \"Take with food. Complete full course even if feeling better.\"\r\n            },\r\n            {\r\n              \"code\": \"MED002\",\r\n              \"medicine_name\": \"Paracetamol\",\r\n              \"strength\": \"500mg\",\r\n              \"form\": \"Tablet\",\r\n              \"method\": \"Oral\",\r\n              \"unit\": \"Tablet\",\r\n              \"morning\": null,\r\n              \"afternoon\": null,\r\n              \"evening\": null,\r\n              \"night\": null,\r\n              \"days\": 3,\r\n              \"interval\": \"8 hours\",\r\n              \"note\": \"Take as needed for fever or pain.\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"referrals\": {\r\n        \"referred_from\": null,\r\n        \"referred_to\": {\r\n          \"code\": \"REF20250317001\",\r\n          \"letter_number\": \"HCPP/REF/2025/317\",\r\n          \"transportation\": \"Ambulance\",\r\n          \"reason\": \"Severe malaria with signs of organ dysfunction requiring ICU care\",\r\n          \"has_called\": true,\r\n          \"caretaker_name\": \"Sok Channary\",\r\n          \"caretaker_phone\": \"012345678\",\r\n          \"referred_by\": \"Dr. Chhun Sovannarith\",\r\n          \"referred_by_phone\": \"0987654321\",\r\n          \"referred_at\": \"2025-03-17T11:30:00.000+07:00\",\r\n          \"received_by\": \"0712345678\",\r\n          \"received_at\": \"2025-03-17T12:15:00.000+07:00\",\r\n          \"medications\": \"Artemether-Lumefantrine 20/120mg (1 dose given at 10:15), IV Artesunate 120mg initiated at 11:00\"\r\n        }\r\n      },\r\n      \"invoices\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"code\": \"INV20250317001\",\r\n          \"payment_type\": \"HEF\",\r\n          \"invoice_date\": \"2025-03-17T11:00:00.000+07:00\",\r\n          \"total\": 120000,\r\n          \"created_at\": \"2025-03-17T11:00:00.000+07:00\",\r\n          \"updated_at\": \"2025-03-17T11:00:00.000+07:00\",\r\n          \"cashier\": \"Sok Kunthea\",\r\n          \"services\": [\r\n            {\r\n              \"invoice_code\": \"INV20250317001\",\r\n              \"service_code\": \"SRV001\",\r\n              \"service_name\": \"Blood Smear for Malaria\",\r\n              \"service_category\": \"Lab Test\",\r\n              \"price\": 15000,\r\n              \"payment\": 0,\r\n              \"paid\": false,\r\n              \"discount_type\": null,\r\n              \"discount\": 0\r\n            }\r\n          ],\r\n          \"medications\": [\r\n            {\r\n              \"invoice_code\": \"INV20250317001\",\r\n              \"medicine_code\": \"MED001\",\r\n              \"medicine_name\": \"Artemether-Lumefantrine 20/120mg\",\r\n              \"quantity\": 24,\r\n              \"price\": 1500,\r\n              \"payment\": 0,\r\n              \"paid\": false,\r\n              \"discount_type\": null,\r\n              \"discount\": 0\r\n            },\r\n            {\r\n              \"invoice_code\": \"INV20250317001\",\r\n              \"medicine_code\": \"MED002\",\r\n              \"medicine_name\": \"Paracetamol 500mg\",\r\n              \"quantity\": 9,\r\n              \"price\": 1000,\r\n              \"payment\": 0,\r\n              \"paid\": false,\r\n              \"discount_type\": null,\r\n              \"discount\": 0\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "https://demo-authena.ddmit.site/api/v1/external/visits",
+					"protocol": "https",
+					"host": [
+						"demo-authena",
+						"ddmit",
+						"site"
+					],
+					"path": [
+						"api",
+						"v1",
+						"external",
+						"visits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Processing",
+			"protocolProfileBehavior": {
+				"strictSSL": false,
+				"followRedirects": true,
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "string"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "string"
+					},
+					{
+						"key": "X-System-Code",
+						"value": "SHCH",
+						"type": "string"
+					},
+					{
+						"key": "X-Health-Facility-Code",
+						"value": "121020",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"visits\": [\r\n    {\r\n      \"health_facility_code\": \"121020\",\r\n      \"patient_code\": \"PP25003877\",\r\n      \"code\": \"VV420650\",\r\n      \"admission_type\": \"Self Refer\",\r\n      \"discharge_type\": \"Authorized\",\r\n      \"visit_outcome\": \"Improved\",\r\n      \"visit_type\": \"OPD\",\r\n      \"admitted_at\": \"2025-03-17T09:30:00+07:00\",\r\n      \"discharged_at\": \"2025-03-17T10:45:00+07:00\",\r\n      \"followup_at\": \"2025-03-24T09:00:00+07:00\",\r\n      \"created_at\": \"2025-03-17T09:30:00+07:00\",\r\n      \"updated_at\": \"2025-03-17T10:45:00+07:00\",\r\n      \"patient\": {\r\n        \"code\": \"PT20250317001\",\r\n        \"surname\": \"Smith\",\r\n        \"name\": \"John\",\r\n        \"sex\": \"M\",\r\n        \"birthdate\": \"1980-05-15\",\r\n        \"phone\": \"012 345 678\",\r\n        \"nationality\": \"Cambodian\",\r\n        \"disabilities\": [\r\n          \"Hearing impairment\"\r\n        ],\r\n        \"occupation\": \"Teacher\",\r\n        \"marital_status\": \"Married\",\r\n        \"photos\": [\r\n          \"https://hospital.example/photos/PT20250317001_1.jpg\"\r\n        ],\r\n        \"address\": {\r\n          \"province\": {\r\n            \"code\": \"12\",\r\n            \"name\": \"Phnom Penh\"\r\n          },\r\n          \"district\": {\r\n            \"code\": \"1201\",\r\n            \"name\": \"Chamkar Mon\"\r\n          },\r\n          \"commune\": {\r\n            \"code\": \"120101\",\r\n            \"name\": \"Tonle Bassac\"\r\n          },\r\n          \"village\": {\r\n            \"code\": \"12010101\",\r\n            \"name\": \"Phsar Deum Thkov\"\r\n          },\r\n          \"house_number\": \"45\",\r\n          \"street_number\": \"302\",\r\n          \"location\": \"Near Central Market 1\"\r\n        },\r\n        \"identifications\": [\r\n          {\r\n            \"patient_code\": \"PT20250317001\",\r\n            \"card_code\": \"ID123456789\",\r\n            \"card_type\": \"National ID\"\r\n          }\r\n        ],\r\n        \"death_at\": null,\r\n        \"spid\": \"250317001\",\r\n        \"created_at\": \"2025-03-17T08:30:00Z\",\r\n        \"updated_at\": \"2025-03-17T08:30:00Z\"\r\n      },\r\n      \"triages\": [\r\n        {\r\n          \"parent_code\": \"P2324\",\r\n          \"visit_code\": \" V420650\",\r\n          \"code\": \"TR250317\",\r\n          \"chief_complaint\": \"Periodic fever with chills for 3 days\",\r\n          \"height\": 170,\r\n          \"weight\": 65,\r\n          \"recorded_at\": \"2025-03-17T09:32:00+07:00\",\r\n          \"recorded_by\": \"Khun Srey Mom\",\r\n          \"title\": \"Doctor\"\r\n        }\r\n      ],\r\n      \"vital_signs\": [\r\n        {\r\n          \"encounter_code\": \"E250317\",\r\n          \"recorded_at\": \"2025-03-17T09:40:00+07:00\",\r\n          \"recorded_by\": \"Khun Srey Mom\",\r\n          \"title\": \"Doctor\",\r\n          \"observations\": [\r\n            {\r\n              \"name\": \"Blood Pressure Systolic\",\r\n              \"value\": 135\r\n            },\r\n            {\r\n              \"name\": \"Blood Pressure Diastolic\",\r\n              \"value\": 85\r\n            },\r\n            {\r\n              \"name\": \"Pulse\",\r\n              \"value\": 92\r\n            },\r\n            {\r\n              \"name\": \"Respiratory Rate\",\r\n              \"value\": 18\r\n            },\r\n            {\r\n              \"name\": \"Temperature\",\r\n              \"value\": 38.7\r\n            },\r\n            {\r\n              \"name\": \"SpO2\",\r\n              \"value\": 97\r\n            },\r\n            {\r\n              \"name\": \"Glucose\",\r\n              \"value\": 110\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"medical_histories\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \" Immunization History\",\r\n          \"value\": [\r\n            \"BCG\",\r\n            \"OPV\",\r\n            \"DTP\",\r\n            \"Measles\",\r\n            \"COVID-19\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Allergies\",\r\n          \"value\": [\r\n            \"Prahok\",\r\n            \"Shrimp paste\",\r\n            \"Penicillin\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Past Surgical History\",\r\n          \"value\": [\r\n            \"Appendectomy Surgery\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Past Medical History\",\r\n          \"value\": [\r\n            \"Dengue fever (2020)\",\r\n            \"Typhoid (2018)\",\r\n            \"Cesarean section at Calmette Hospital (2019)\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Family History\",\r\n          \"value\": [\r\n            \"Mother with diabetes\",\r\n            \"Father with hypertension and stroke at age 60\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Current Illness History\",\r\n          \"value\": [\r\n            \"Patient reports high fever with chills occurring every 48 hours, accompanied by headache and joint pain. Symptoms started 3 days ago after returning from a trip to Mondulkiri province. No prior history of malaria. No medication taken yet.\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Current Medication\",\r\n          \"value\": [\r\n            \"Metformin 500mg\",\r\n            \"Amlodipine 5mg\"\r\n          ]\r\n        }\r\n      ],\r\n      \"physical_examinations\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"EN20250317001\",\r\n          \"name\": \"General Appearance\",\r\n          \"value\": \"Ill-appearing with intermittent shivering\",\r\n          \"value_type\": \"text\",\r\n          \"value_unit\": null\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"EN20250317001\",\r\n          \"name\": \"Skin\",\r\n          \"value\": \"Warm, jaundiced, no rash\",\r\n          \"value_type\": \"text\",\r\n          \"value_unit\": null\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"EN20250317001\",\r\n          \"name\": \"Digestive System\",\r\n          \"value\": [\r\n            {\r\n              \"inspection\": \"Flat, no visible masses\"\r\n            },\r\n            {\r\n              \"palpation\": \"Soft, mild RUQ tenderness, spleen palpable 1cm below costal margin\"\r\n            },\r\n            {\r\n              \"percussion\": \"No shifting dullness\"\r\n            },\r\n            {\r\n              \"auscultation\": \"Normal bowel sounds\"\r\n            }\r\n          ],\r\n          \"value_type\": \"complex\",\r\n          \"value_unit\": null\r\n        }\r\n      ],\r\n      \"outpatients\": [\r\n        {\r\n          \"visit_code\": \"VS20250317001\",\r\n          \"code\": \"OPD20250317001\",\r\n          \"name\": \"General Inpatient\",\r\n          \"service_type\": \"General Medicine\",\r\n          \"started_at\": \"2025-03-17T09:35:00+07:00\",\r\n          \"ended_at\": \"2025-03-17T10:15:00+07:00\",\r\n          \"encountered_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00+07:00\"\r\n        }\r\n      ],\r\n      \"inpatients\": [\r\n        {\r\n          \"visit_code\": \"VS20250320001\",\r\n          \"code\": \"IPD20250320001\",\r\n          \"name\": \"General Inpatient\",\r\n          \"service_type\": \"Internal Medicine\",\r\n          \"started_at\": \"2025-03-20T14:00:00+07:00\",\r\n          \"ended_at\": \"2025-03-23T10:00:00+07:00\",\r\n          \"encountered_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00+07:00\"\r\n        }\r\n      ],\r\n      \"emergencies\": [\r\n        {\r\n          \"visit_code\": \"VS20250317002\",\r\n          \"code\": \"ER20250317001\",\r\n          \"name\": \"Emergency\",\r\n          \"service_type_name\": \"Emergency Medicine\",\r\n          \"started_at\": \"2025-03-17T15:30:00+07:00\",\r\n          \"ended_at\": \"2025-03-17T17:45:00+07:00\",\r\n          \"encountered_by\": \"Dr. Hor Mony\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00+07:00\"\r\n        }\r\n      ],\r\n      \"surgeries\": [\r\n        {\r\n          \"visit_code\": \"VS20250401002\",\r\n          \"parent_code\": \"EN20250401001\",\r\n          \"code\": \"SUR20250401001\",\r\n          \"theater_name\": \"Operating Theater 2\",\r\n          \"service_type\": \"Laparoscopic Cholecystectomy\",\r\n          \"started_at\": \"2025-04-01T08:30:00+07:00\",\r\n          \"ended_at\": \"2025-04-01T10:15:00+07:00\",\r\n          \"reason\": \"Symptomatic gallstones with recurrent biliary colic\",\r\n          \"anesthesia_type\": \"General Endotracheal\",\r\n          \"procedure_notes\": \"Patient positioned supine. Pneumoperitoneum established with Veress needle. Four ports were placed. Gallbladder dissected from liver bed with hook cautery. Cystic duct and artery identified, clipped and divided. Gallbladder removed through umbilical port. Hemostasis confirmed. No bile leak. Ports removed under direct visualization. Wounds closed with 3-0 Vicryl and 4-0 Monocryl. Patient tolerated procedure well.\",\r\n          \"complications\": [\r\n            \"Mild bleeding from liver bed, controlled with electrocautery\"\r\n          ],\r\n          \"specimens\": [\r\n            \"Gallbladder with multiple stones\",\r\n            \"Cystic fluid sample\"\r\n          ],\r\n          \"blood_loss\": \"5cl\",\r\n          \"surgeon_name\": \"Dr. Sok Vichet\",\r\n          \"anesthetist_name\": \"Dr. Meas Sokunthea\",\r\n          \"assistant_names\": [\r\n            \"Dr. Chhan Rathana\",\r\n            \"Nurse Van Bopha\"\r\n          ],\r\n          \"created_at\": \"2025-04-01T08:30:00+07:00\",\r\n          \"updated_at\": \"2025-04-01T10:20:00+07:00\"\r\n        }\r\n      ],\r\n      \"progress_notes\": [\r\n        {\r\n          \"visit_code\": \"VS20250317001\",\r\n          \"parent_code\": \"E417001\",\r\n          \"code\": \"E317001\",\r\n          \"started_at\": \"2025-03-17T16:00:00+07:00\",\r\n          \"ended_at\": \"2025-03-17T16:15:00+07:00\",\r\n          \"encountered_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00+07:00\"\r\n        }\r\n      ],\r\n      \"soaps\": [\r\n        {\r\n          \"encounter_code\": \" EN20250317001\",\r\n          \"subjective\": \"Patient reports fever has decreased after first dose of medication. Still experiencing mild headache and fatigue. No chills since this morning. Able to tolerate oral intake well.\",\r\n          \"objective\": \"Temperature 37.8°C (down from 38.7°C). Heart rate 85/min. Blood pressure 125/80 mmHg. Skin less jaundiced. Abdomen remains soft with mild tenderness in RUQ.\",\r\n          \"assessment\": \"Uncomplicated malaria showing initial response to treatment. Fever trending down. No signs of complications.\",\r\n          \"plan\": \"Continue artemether-lumefantrine as prescribed. Encourage oral hydration. Follow-up in clinic in 3 days. Return sooner if symptoms worsen or unable to tolerate medication.\",\r\n          \"evaluation\": null\r\n        }\r\n      ],\r\n      \"laboratories\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"request_code\": \"EL23222\",\r\n          \"requested_at\": \"2025-03-17T10:30:00+07:00\",\r\n          \"requested_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"collected_at\": \"2025-03-17T10:30:00+07:00\",\r\n          \"collected_by\": \"Dr. Chhun Sovannarith\",\r\n          \"results\": [\r\n            {\r\n              \"name\": \"Malaria Blood Smear\",\r\n              \"category\": \"Parasitology\",\r\n              \"value\": \"Positive for P. falciparum\",\r\n              \"value_type\": \"string\",\r\n              \"value_unit\": null,\r\n              \"reference_range\": \"Negative\",\r\n              \"interpretation\": \"Positive\",\r\n              \"verified_at\": \"2025-03-17T10:50:00+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            },\r\n            {\r\n              \"name\": \"Parasitemia\",\r\n              \"category\": \"Parasitology\",\r\n              \"value\": 2.5,\r\n              \"value_type\": \"float\",\r\n              \"value_unit\": \"%\",\r\n              \"reference_range\": \"0\",\r\n              \"interpretation\": \"High\",\r\n              \"verified_at\": \"2025-03-17T10:50:00+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            },\r\n            {\r\n              \"name\": \"Hemoglobin\",\r\n              \"category\": \"Hematology\",\r\n              \"value\": 11.2,\r\n              \"value_type\": \"float\",\r\n              \"value_unit\": \"g/dL\",\r\n              \"reference_range\": \"13.5-17.5\",\r\n              \"interpretation\": \"Low\",\r\n              \"verified_at\": \"2025-03-17T10:50:00+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"imageries\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"request_code\": \"EL23222\",\r\n          \"requested_at\": \"2025-03-17T11:30:00+07:00\",\r\n          \"requested_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"title\",\r\n          \"collected_at\": \"2025-03-17T10:30:00+07:00\",\r\n          \"collected_by\": \"Dr. Chhun Sovannarith\",\r\n          \"results\": [\r\n            {\r\n              \"name\": \"Brain Scan\",\r\n              \"category\": \"CT Scan\",\r\n              \"images\": [\r\n                \"img.com/result2.jpg\"\r\n              ],\r\n              \"result\": \"string\",\r\n              \"conclusion\": null,\r\n              \"verified_at\": \"2025-03-17T10:50:00+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            }\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"request_code\": \"EL23222\",\r\n          \"requested_at\": \"2025-03-17T11:35:00+07:00\",\r\n          \"requested_by\": \"Dr. Chhun Sovannarith\",\r\n          \"tilte\": \"Doctor\",\r\n          \"results\": [\r\n            {\r\n              \"name\": \"Adomen Ultrasound\",\r\n              \"category\": \"Ultrasound\",\r\n              \"images\": [\r\n                \"img.com/result1.jpg\"\r\n              ],\r\n              \"result\": \"string\",\r\n              \"conclusion\": null,\r\n              \"verified_at\": \"2025-03-17T10:50:00+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"diagnosis\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"diagnosis_type_name\": \"Primary\",\r\n          \"diagnosis_code\": \"B50\",\r\n          \"diagnosis_name\": \"Plasmodium falciparum malaria\",\r\n          \"diagnosis_description\": \"Plasmodium falciparum malaria with cerebral complications\",\r\n          \"diagnosed_at\": \"2025-03-17T10:05:00+07:00\",\r\n          \"diagnosed_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\"\r\n        }\r\n      ],\r\n      \"prescriptions\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"code\": \"RX20250317001\",\r\n          \"prescribed_at\": \"2025-03-17T10:10:00+07:00\",\r\n          \"prescribed_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"medications\": [\r\n            {\r\n              \"code\": \"MED001\",\r\n              \"medicine_name\": \"Artemether-Lumefantrine\",\r\n              \"strength\": \"20/120mg\",\r\n              \"form\": \"Tablet\",\r\n              \"method\": \"Oral\",\r\n              \"unit\": \"Tablet\",\r\n              \"morning\": 4,\r\n              \"afternoon\": 0,\r\n              \"evening\": 4,\r\n              \"night\": 0,\r\n              \"days\": 3,\r\n              \"interval\": null,\r\n              \"note\": \"Take with food. Complete full course even if feeling better.\"\r\n            },\r\n            {\r\n              \"code\": \"MED002\",\r\n              \"medicine_name\": \"Paracetamol\",\r\n              \"strength\": \"500mg\",\r\n              \"form\": \"Tablet\",\r\n              \"method\": \"Oral\",\r\n              \"unit\": \"Tablet\",\r\n              \"morning\": null,\r\n              \"afternoon\": null,\r\n              \"evening\": null,\r\n              \"night\": null,\r\n              \"days\": 3,\r\n              \"interval\": \"8 hours\",\r\n              \"note\": \"Take as needed for fever or pain.\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"referrals\": {\r\n        \"referred_from\": null,\r\n        \"referred_to\": {\r\n          \"code\": \"REF20250317001\",\r\n          \"letter_number\": \"HCPP/REF/2025/317\",\r\n          \"transportation\": \"Ambulance\",\r\n          \"reason\": \"Severe malaria with signs of organ dysfunction requiring ICU care\",\r\n          \"has_called\": true,\r\n          \"caretaker_name\": \"Sok Channary\",\r\n          \"caretaker_phone\": \"012345678\",\r\n          \"referred_by\": \"Dr. Chhun Sovannarith\",\r\n          \"referred_by_phone\": \"0987654321\",\r\n          \"referred_at\": \"2025-03-17T11:30:00+07:00\",\r\n          \"received_by\": \"0712345678\",\r\n          \"received_at\": \"2025-03-17T12:15:00+07:00\",\r\n          \"medications\": \"Artemether-Lumefantrine 20/120mg (1 dose given at 10:15), IV Artesunate 120mg initiated at 11:00\"\r\n        }\r\n      },\r\n      \"invoices\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"code\": \"INV20250317001\",\r\n          \"payment_type\": \"HEF\",\r\n          \"invoice_date\": \"2025-03-17T11:00:00+07:00\",\r\n          \"total\": 120000,\r\n          \"created_at\": \"2025-03-17T11:00:00+07:00\",\r\n          \"updated_at\": \"2025-03-17T11:00:00+07:00\",\r\n          \"cashier\": \"Sok Kunthea\",\r\n          \"services\": [\r\n            {\r\n              \"invoice_code\": \"INV20250317001\",\r\n              \"service_code\": \"SRV001\",\r\n              \"service_name\": \"Blood Smear for Malaria\",\r\n              \"service_category\": \"Lab Test\",\r\n              \"price\": 15000,\r\n              \"payment\": 0,\r\n              \"paid\": false,\r\n              \"discount_type\": null,\r\n              \"discount\": 0\r\n            }\r\n          ],\r\n          \"medications\": [\r\n            {\r\n              \"invoice_code\": \"INV20250317001\",\r\n              \"medicine_code\": \"MED001\",\r\n              \"medicine_name\": \"Artemether-Lumefantrine 20/120mg\",\r\n              \"quantity\": 24,\r\n              \"price\": 1500,\r\n              \"payment\": 0,\r\n              \"paid\": false,\r\n              \"discount_type\": null,\r\n              \"discount\": 0\r\n            },\r\n            {\r\n              \"invoice_code\": \"INV20250317001\",\r\n              \"medicine_code\": \"MED002\",\r\n              \"medicine_name\": \"Paracetamol 500mg\",\r\n              \"quantity\": 9,\r\n              \"price\": 1000,\r\n              \"payment\": 0,\r\n              \"paid\": false,\r\n              \"discount_type\": null,\r\n              \"discount\": 0\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "https://demo-authena.ddmit.site/api/v1/external/visits/processed?per_page=4",
+					"protocol": "https",
+					"host": [
+						"demo-authena",
+						"ddmit",
+						"site"
+					],
+					"path": [
+						"api",
+						"v1",
+						"external",
+						"visits",
+						"processed"
+					],
+					"query": [
+						{
+							"key": "discharged_at_from",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "discharged_at_to",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "admitted_at_from",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "admitted_at_to",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "processing_status",
+							"value": "processing",
+							"disabled": true
+						},
+						{
+							"key": "sort_by",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "sort_direction",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "per_page",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Beneficiary",
+			"protocolProfileBehavior": {
+				"strictSSL": false,
+				"followRedirects": true,
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "string"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "string"
+					},
+					{
+						"key": "X-System-Code",
+						"value": "SHCH",
+						"type": "string"
+					},
+					{
+						"key": "X-Health-Facility-Code",
+						"value": "121020",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"visits\": [\r\n    {\r\n      \"health_facility_code\": \"121020\",\r\n      \"patient_code\": \"PP25003877\",\r\n      \"code\": \"VV420650\",\r\n      \"admission_type\": \"Self Refer\",\r\n      \"discharge_type\": \"Authorized\",\r\n      \"visit_outcome\": \"Improved\",\r\n      \"visit_type\": \"OPD\",\r\n      \"admitted_at\": \"2025-03-17T09:30:00+07:00\",\r\n      \"discharged_at\": \"2025-03-17T10:45:00+07:00\",\r\n      \"followup_at\": \"2025-03-24T09:00:00+07:00\",\r\n      \"created_at\": \"2025-03-17T09:30:00+07:00\",\r\n      \"updated_at\": \"2025-03-17T10:45:00+07:00\",\r\n      \"patient\": {\r\n        \"code\": \"PT20250317001\",\r\n        \"surname\": \"Smith\",\r\n        \"name\": \"John\",\r\n        \"sex\": \"M\",\r\n        \"birthdate\": \"1980-05-15\",\r\n        \"phone\": \"012 345 678\",\r\n        \"nationality\": \"Cambodian\",\r\n        \"disabilities\": [\r\n          \"Hearing impairment\"\r\n        ],\r\n        \"occupation\": \"Teacher\",\r\n        \"marital_status\": \"Married\",\r\n        \"photos\": [\r\n          \"https://hospital.example/photos/PT20250317001_1.jpg\"\r\n        ],\r\n        \"address\": {\r\n          \"province\": {\r\n            \"code\": \"12\",\r\n            \"name\": \"Phnom Penh\"\r\n          },\r\n          \"district\": {\r\n            \"code\": \"1201\",\r\n            \"name\": \"Chamkar Mon\"\r\n          },\r\n          \"commune\": {\r\n            \"code\": \"120101\",\r\n            \"name\": \"Tonle Bassac\"\r\n          },\r\n          \"village\": {\r\n            \"code\": \"12010101\",\r\n            \"name\": \"Phsar Deum Thkov\"\r\n          },\r\n          \"house_number\": \"45\",\r\n          \"street_number\": \"302\",\r\n          \"location\": \"Near Central Market 1\"\r\n        },\r\n        \"identifications\": [\r\n          {\r\n            \"patient_code\": \"PT20250317001\",\r\n            \"card_code\": \"ID123456789\",\r\n            \"card_type\": \"National ID\"\r\n          }\r\n        ],\r\n        \"death_at\": null,\r\n        \"spid\": \"250317001\",\r\n        \"created_at\": \"2025-03-17T08:30:00Z\",\r\n        \"updated_at\": \"2025-03-17T08:30:00Z\"\r\n      },\r\n      \"triages\": [\r\n        {\r\n          \"parent_code\": \"P2324\",\r\n          \"visit_code\": \" V420650\",\r\n          \"code\": \"TR250317\",\r\n          \"chief_complaint\": \"Periodic fever with chills for 3 days\",\r\n          \"height\": 170,\r\n          \"weight\": 65,\r\n          \"recorded_at\": \"2025-03-17T09:32:00+07:00\",\r\n          \"recorded_by\": \"Khun Srey Mom\",\r\n          \"title\": \"Doctor\"\r\n        }\r\n      ],\r\n      \"vital_signs\": [\r\n        {\r\n          \"encounter_code\": \"E250317\",\r\n          \"recorded_at\": \"2025-03-17T09:40:00+07:00\",\r\n          \"recorded_by\": \"Khun Srey Mom\",\r\n          \"title\": \"Doctor\",\r\n          \"observations\": [\r\n            {\r\n              \"name\": \"Blood Pressure Systolic\",\r\n              \"value\": 135\r\n            },\r\n            {\r\n              \"name\": \"Blood Pressure Diastolic\",\r\n              \"value\": 85\r\n            },\r\n            {\r\n              \"name\": \"Pulse\",\r\n              \"value\": 92\r\n            },\r\n            {\r\n              \"name\": \"Respiratory Rate\",\r\n              \"value\": 18\r\n            },\r\n            {\r\n              \"name\": \"Temperature\",\r\n              \"value\": 38.7\r\n            },\r\n            {\r\n              \"name\": \"SpO2\",\r\n              \"value\": 97\r\n            },\r\n            {\r\n              \"name\": \"Glucose\",\r\n              \"value\": 110\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"medical_histories\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \" Immunization History\",\r\n          \"value\": [\r\n            \"BCG\",\r\n            \"OPV\",\r\n            \"DTP\",\r\n            \"Measles\",\r\n            \"COVID-19\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Allergies\",\r\n          \"value\": [\r\n            \"Prahok\",\r\n            \"Shrimp paste\",\r\n            \"Penicillin\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Past Surgical History\",\r\n          \"value\": [\r\n            \"Appendectomy Surgery\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Past Medical History\",\r\n          \"value\": [\r\n            \"Dengue fever (2020)\",\r\n            \"Typhoid (2018)\",\r\n            \"Cesarean section at Calmette Hospital (2019)\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Family History\",\r\n          \"value\": [\r\n            \"Mother with diabetes\",\r\n            \"Father with hypertension and stroke at age 60\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Current Illness History\",\r\n          \"value\": [\r\n            \"Patient reports high fever with chills occurring every 48 hours, accompanied by headache and joint pain. Symptoms started 3 days ago after returning from a trip to Mondulkiri province. No prior history of malaria. No medication taken yet.\"\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E417001\",\r\n          \"name\": \"Current Medication\",\r\n          \"value\": [\r\n            \"Metformin 500mg\",\r\n            \"Amlodipine 5mg\"\r\n          ]\r\n        }\r\n      ],\r\n      \"physical_examinations\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"EN20250317001\",\r\n          \"name\": \"General Appearance\",\r\n          \"value\": \"Ill-appearing with intermittent shivering\",\r\n          \"value_type\": \"text\",\r\n          \"value_unit\": null\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"EN20250317001\",\r\n          \"name\": \"Skin\",\r\n          \"value\": \"Warm, jaundiced, no rash\",\r\n          \"value_type\": \"text\",\r\n          \"value_unit\": null\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"EN20250317001\",\r\n          \"name\": \"Digestive System\",\r\n          \"value\": [\r\n            {\r\n              \"inspection\": \"Flat, no visible masses\"\r\n            },\r\n            {\r\n              \"palpation\": \"Soft, mild RUQ tenderness, spleen palpable 1cm below costal margin\"\r\n            },\r\n            {\r\n              \"percussion\": \"No shifting dullness\"\r\n            },\r\n            {\r\n              \"auscultation\": \"Normal bowel sounds\"\r\n            }\r\n          ],\r\n          \"value_type\": \"complex\",\r\n          \"value_unit\": null\r\n        }\r\n      ],\r\n      \"outpatients\": [\r\n        {\r\n          \"visit_code\": \"VS20250317001\",\r\n          \"code\": \"OPD20250317001\",\r\n          \"name\": \"General Inpatient\",\r\n          \"service_type\": \"General Medicine\",\r\n          \"started_at\": \"2025-03-17T09:35:00+07:00\",\r\n          \"ended_at\": \"2025-03-17T10:15:00+07:00\",\r\n          \"encountered_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00+07:00\"\r\n        }\r\n      ],\r\n      \"inpatients\": [\r\n        {\r\n          \"visit_code\": \"VS20250320001\",\r\n          \"code\": \"IPD20250320001\",\r\n          \"name\": \"General Inpatient\",\r\n          \"service_type\": \"Internal Medicine\",\r\n          \"started_at\": \"2025-03-20T14:00:00+07:00\",\r\n          \"ended_at\": \"2025-03-23T10:00:00+07:00\",\r\n          \"encountered_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00+07:00\"\r\n        }\r\n      ],\r\n      \"emergencies\": [\r\n        {\r\n          \"visit_code\": \"VS20250317002\",\r\n          \"code\": \"ER20250317001\",\r\n          \"name\": \"Emergency\",\r\n          \"service_type_name\": \"Emergency Medicine\",\r\n          \"started_at\": \"2025-03-17T15:30:00+07:00\",\r\n          \"ended_at\": \"2025-03-17T17:45:00+07:00\",\r\n          \"encountered_by\": \"Dr. Hor Mony\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00+07:00\"\r\n        }\r\n      ],\r\n      \"surgeries\": [\r\n        {\r\n          \"visit_code\": \"VS20250401002\",\r\n          \"parent_code\": \"EN20250401001\",\r\n          \"code\": \"SUR20250401001\",\r\n          \"theater_name\": \"Operating Theater 2\",\r\n          \"service_type\": \"Laparoscopic Cholecystectomy\",\r\n          \"started_at\": \"2025-04-01T08:30:00+07:00\",\r\n          \"ended_at\": \"2025-04-01T10:15:00+07:00\",\r\n          \"reason\": \"Symptomatic gallstones with recurrent biliary colic\",\r\n          \"anesthesia_type\": \"General Endotracheal\",\r\n          \"procedure_notes\": \"Patient positioned supine. Pneumoperitoneum established with Veress needle. Four ports were placed. Gallbladder dissected from liver bed with hook cautery. Cystic duct and artery identified, clipped and divided. Gallbladder removed through umbilical port. Hemostasis confirmed. No bile leak. Ports removed under direct visualization. Wounds closed with 3-0 Vicryl and 4-0 Monocryl. Patient tolerated procedure well.\",\r\n          \"complications\": [\r\n            \"Mild bleeding from liver bed, controlled with electrocautery\"\r\n          ],\r\n          \"specimens\": [\r\n            \"Gallbladder with multiple stones\",\r\n            \"Cystic fluid sample\"\r\n          ],\r\n          \"blood_loss\": \"5cl\",\r\n          \"surgeon_name\": \"Dr. Sok Vichet\",\r\n          \"anesthetist_name\": \"Dr. Meas Sokunthea\",\r\n          \"assistant_names\": [\r\n            \"Dr. Chhan Rathana\",\r\n            \"Nurse Van Bopha\"\r\n          ],\r\n          \"created_at\": \"2025-04-01T08:30:00+07:00\",\r\n          \"updated_at\": \"2025-04-01T10:20:00+07:00\"\r\n        }\r\n      ],\r\n      \"progress_notes\": [\r\n        {\r\n          \"visit_code\": \"VS20250317001\",\r\n          \"parent_code\": \"E417001\",\r\n          \"code\": \"E317001\",\r\n          \"started_at\": \"2025-03-17T16:00:00+07:00\",\r\n          \"ended_at\": \"2025-03-17T16:15:00+07:00\",\r\n          \"encountered_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"created_at\": \"2025-03-17T09:35:00+07:00\",\r\n          \"updated_at\": \"2025-03-17T10:15:00+07:00\"\r\n        }\r\n      ],\r\n      \"soaps\": [\r\n        {\r\n          \"encounter_code\": \" EN20250317001\",\r\n          \"subjective\": \"Patient reports fever has decreased after first dose of medication. Still experiencing mild headache and fatigue. No chills since this morning. Able to tolerate oral intake well.\",\r\n          \"objective\": \"Temperature 37.8°C (down from 38.7°C). Heart rate 85/min. Blood pressure 125/80 mmHg. Skin less jaundiced. Abdomen remains soft with mild tenderness in RUQ.\",\r\n          \"assessment\": \"Uncomplicated malaria showing initial response to treatment. Fever trending down. No signs of complications.\",\r\n          \"plan\": \"Continue artemether-lumefantrine as prescribed. Encourage oral hydration. Follow-up in clinic in 3 days. Return sooner if symptoms worsen or unable to tolerate medication.\",\r\n          \"evaluation\": null\r\n        }\r\n      ],\r\n      \"laboratories\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"request_code\": \"EL23222\",\r\n          \"requested_at\": \"2025-03-17T10:30:00+07:00\",\r\n          \"requested_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"collected_at\": \"2025-03-17T10:30:00+07:00\",\r\n          \"collected_by\": \"Dr. Chhun Sovannarith\",\r\n          \"results\": [\r\n            {\r\n              \"name\": \"Malaria Blood Smear\",\r\n              \"category\": \"Parasitology\",\r\n              \"value\": \"Positive for P. falciparum\",\r\n              \"value_type\": \"string\",\r\n              \"value_unit\": null,\r\n              \"reference_range\": \"Negative\",\r\n              \"interpretation\": \"Positive\",\r\n              \"verified_at\": \"2025-03-17T10:50:00+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            },\r\n            {\r\n              \"name\": \"Parasitemia\",\r\n              \"category\": \"Parasitology\",\r\n              \"value\": 2.5,\r\n              \"value_type\": \"float\",\r\n              \"value_unit\": \"%\",\r\n              \"reference_range\": \"0\",\r\n              \"interpretation\": \"High\",\r\n              \"verified_at\": \"2025-03-17T10:50:00+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            },\r\n            {\r\n              \"name\": \"Hemoglobin\",\r\n              \"category\": \"Hematology\",\r\n              \"value\": 11.2,\r\n              \"value_type\": \"float\",\r\n              \"value_unit\": \"g/dL\",\r\n              \"reference_range\": \"13.5-17.5\",\r\n              \"interpretation\": \"Low\",\r\n              \"verified_at\": \"2025-03-17T10:50:00+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"imageries\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"request_code\": \"EL23222\",\r\n          \"requested_at\": \"2025-03-17T11:30:00+07:00\",\r\n          \"requested_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"title\",\r\n          \"collected_at\": \"2025-03-17T10:30:00+07:00\",\r\n          \"collected_by\": \"Dr. Chhun Sovannarith\",\r\n          \"results\": [\r\n            {\r\n              \"name\": \"Brain Scan\",\r\n              \"category\": \"CT Scan\",\r\n              \"images\": [\r\n                \"img.com/result2.jpg\"\r\n              ],\r\n              \"result\": \"string\",\r\n              \"conclusion\": null,\r\n              \"verified_at\": \"2025-03-17T10:50:00+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            }\r\n          ]\r\n        },\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"request_code\": \"EL23222\",\r\n          \"requested_at\": \"2025-03-17T11:35:00+07:00\",\r\n          \"requested_by\": \"Dr. Chhun Sovannarith\",\r\n          \"tilte\": \"Doctor\",\r\n          \"results\": [\r\n            {\r\n              \"name\": \"Adomen Ultrasound\",\r\n              \"category\": \"Ultrasound\",\r\n              \"images\": [\r\n                \"img.com/result1.jpg\"\r\n              ],\r\n              \"result\": \"string\",\r\n              \"conclusion\": null,\r\n              \"verified_at\": \"2025-03-17T10:50:00+07:00\",\r\n              \"verified_by\": \"Dr. Meas Chenda\",\r\n              \"recorded_at\": \"2025-03-17T10:52:00+07:00\",\r\n              \"recorded_by\": \"Meas Chandaravuth\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"diagnosis\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"diagnosis_type_name\": \"Primary\",\r\n          \"diagnosis_code\": \"B50\",\r\n          \"diagnosis_name\": \"Plasmodium falciparum malaria\",\r\n          \"diagnosis_description\": \"Plasmodium falciparum malaria with cerebral complications\",\r\n          \"diagnosed_at\": \"2025-03-17T10:05:00+07:00\",\r\n          \"diagnosed_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\"\r\n        }\r\n      ],\r\n      \"prescriptions\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"code\": \"RX20250317001\",\r\n          \"prescribed_at\": \"2025-03-17T10:10:00+07:00\",\r\n          \"prescribed_by\": \"Dr. Chhun Sovannarith\",\r\n          \"title\": \"Doctor\",\r\n          \"medications\": [\r\n            {\r\n              \"code\": \"MED001\",\r\n              \"medicine_name\": \"Artemether-Lumefantrine\",\r\n              \"strength\": \"20/120mg\",\r\n              \"form\": \"Tablet\",\r\n              \"method\": \"Oral\",\r\n              \"unit\": \"Tablet\",\r\n              \"morning\": 4,\r\n              \"afternoon\": 0,\r\n              \"evening\": 4,\r\n              \"night\": 0,\r\n              \"days\": 3,\r\n              \"interval\": null,\r\n              \"note\": \"Take with food. Complete full course even if feeling better.\"\r\n            },\r\n            {\r\n              \"code\": \"MED002\",\r\n              \"medicine_name\": \"Paracetamol\",\r\n              \"strength\": \"500mg\",\r\n              \"form\": \"Tablet\",\r\n              \"method\": \"Oral\",\r\n              \"unit\": \"Tablet\",\r\n              \"morning\": null,\r\n              \"afternoon\": null,\r\n              \"evening\": null,\r\n              \"night\": null,\r\n              \"days\": 3,\r\n              \"interval\": \"8 hours\",\r\n              \"note\": \"Take as needed for fever or pain.\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"referrals\": {\r\n        \"referred_from\": null,\r\n        \"referred_to\": {\r\n          \"code\": \"REF20250317001\",\r\n          \"letter_number\": \"HCPP/REF/2025/317\",\r\n          \"transportation\": \"Ambulance\",\r\n          \"reason\": \"Severe malaria with signs of organ dysfunction requiring ICU care\",\r\n          \"has_called\": true,\r\n          \"caretaker_name\": \"Sok Channary\",\r\n          \"caretaker_phone\": \"012345678\",\r\n          \"referred_by\": \"Dr. Chhun Sovannarith\",\r\n          \"referred_by_phone\": \"0987654321\",\r\n          \"referred_at\": \"2025-03-17T11:30:00+07:00\",\r\n          \"received_by\": \"0712345678\",\r\n          \"received_at\": \"2025-03-17T12:15:00+07:00\",\r\n          \"medications\": \"Artemether-Lumefantrine 20/120mg (1 dose given at 10:15), IV Artesunate 120mg initiated at 11:00\"\r\n        }\r\n      },\r\n      \"invoices\": [\r\n        {\r\n          \"patient_code\": \"P25003877\",\r\n          \"visit_code\": \"V420650\",\r\n          \"encounter_code\": \"E317001\",\r\n          \"code\": \"INV20250317001\",\r\n          \"payment_type\": \"HEF\",\r\n          \"invoice_date\": \"2025-03-17T11:00:00+07:00\",\r\n          \"total\": 120000,\r\n          \"created_at\": \"2025-03-17T11:00:00+07:00\",\r\n          \"updated_at\": \"2025-03-17T11:00:00+07:00\",\r\n          \"cashier\": \"Sok Kunthea\",\r\n          \"services\": [\r\n            {\r\n              \"invoice_code\": \"INV20250317001\",\r\n              \"service_code\": \"SRV001\",\r\n              \"service_name\": \"Blood Smear for Malaria\",\r\n              \"service_category\": \"Lab Test\",\r\n              \"price\": 15000,\r\n              \"payment\": 0,\r\n              \"paid\": false,\r\n              \"discount_type\": null,\r\n              \"discount\": 0\r\n            }\r\n          ],\r\n          \"medications\": [\r\n            {\r\n              \"invoice_code\": \"INV20250317001\",\r\n              \"medicine_code\": \"MED001\",\r\n              \"medicine_name\": \"Artemether-Lumefantrine 20/120mg\",\r\n              \"quantity\": 24,\r\n              \"price\": 1500,\r\n              \"payment\": 0,\r\n              \"paid\": false,\r\n              \"discount_type\": null,\r\n              \"discount\": 0\r\n            },\r\n            {\r\n              \"invoice_code\": \"INV20250317001\",\r\n              \"medicine_code\": \"MED002\",\r\n              \"medicine_name\": \"Paracetamol 500mg\",\r\n              \"quantity\": 9,\r\n              \"price\": 1000,\r\n              \"payment\": 0,\r\n              \"paid\": false,\r\n              \"discount_type\": null,\r\n              \"discount\": 0\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "https://demo-authena.ddmit.site/api/v1/external/beneficiary/search?card_number=160498163",
+					"protocol": "https",
+					"host": [
+						"demo-authena",
+						"ddmit",
+						"site"
+					],
+					"path": [
+						"api",
+						"v1",
+						"external",
+						"beneficiary",
+						"search"
+					],
+					"query": [
+						{
+							"key": "card_number",
+							"value": "160498163"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://spcs.test",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": ""
+		}
+	]
+}
